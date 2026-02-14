@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>วิทยาลัยเทคนิคนครศรีธรรมราช</title>
+    <style>
+        :root {
+            --nf-red: #E50914;
+            --nf-black: #141414;
+            --nf-dark-grey: #181818;
+            --nf-light-grey: #b3b3b3;
+            --nf-white: #ffffff;
+        }
+
+        * { box-sizing: border-box; font-family: 'Tahoma', sans-serif; }
+
+        body {
+            margin: 0; padding: 0;
+            background-color: var(--nf-black);
+            color: var(--nf-white);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            background-color: rgba(20, 20, 20, 0.95);
+            height: 70px;
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            display: flex; align-items: center; padding: 0 4%;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo { color: var(--nf-red); font-size: 24px; font-weight: bold; text-decoration: none; margin-right: 30px; }
+
+        nav { display: flex; gap: 20px; overflow-x: auto; }
+        nav a { text-decoration: none; color: #e5e5e5; font-size: 14px; white-space: nowrap; transition: 0.3s; }
+        nav a:hover { color: var(--nf-red); }
+
+        .container { padding: 100px 4% 40px 4%; }
+
+        /* 💡 แก้ไข: เพิ่ม scroll-margin-top เพื่อให้เวลาคลิกเมนูแล้วไม่โดน Navbar บังหัวข้อ */
+        h2 { 
+            font-size: 24px; 
+            margin: 40px 0 20px 0; 
+            border-left: 5px solid var(--nf-red); 
+            padding-left: 15px;
+            scroll-margin-top: 100px; 
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+            gap: 20px;
+        }
+
+        /* News Cards */
+        .news-card {
+            background-color: var(--nf-dark-grey);
+            border-radius: 4px; overflow: hidden; height: 180px;
+            border: 1px solid #333; transition: 0.4s; position: relative;
+        }
+        .news-card:hover { transform: scale(1.05); border-color: var(--nf-red); z-index: 10; }
+        .news-overlay {
+            position: absolute; bottom: 0; width: 100%; padding: 15px;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+        }
+
+        /* Executive Style */
+        .exec-card {
+            background-color: var(--nf-dark-grey);
+            border-radius: 8px; overflow: hidden; text-align: center; border: 1px solid #333; transition: 0.4s;
+        }
+        .exec-img { width: 100%; height: 280px; object-fit: cover; background-color: #222; }
+        .exec-info { padding: 15px; }
+
+        /* General Card Style */
+        .card {
+            background-color: var(--nf-dark-grey);
+            border-radius: 6px; padding: 20px; border: 1px solid #333;
+            transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between;
+        }
+        .card:hover { border-color: var(--nf-red); background-color: #222; }
+        .card-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; color: var(--nf-white); }
+        .card-text { font-size: 13px; color: var(--nf-light-grey); margin-bottom: 15px; }
+
+        .btn-personnel {
+            display: inline-block; background: var(--nf-red); color: white;
+            text-decoration: none; padding: 8px; text-align: center;
+            font-size: 13px; font-weight: bold; border-radius: 4px;
+        }
+
+        footer { padding: 50px; text-align: center; color: #555; border-top: 1px solid #333; margin-top: 50px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="logo">วิทยาลัยเทคนิคนครศรีธรรมราช</a>
+        <nav>
+            <a href="#news">หน้าแรก</a>
+            <a href="#executives">ผู้บริหาร</a>
+            <a href="#personnel">บุคลากร</a>
+            <a href="#departments">สาขาวิชา</a>
+            <a href="#contact">ติดต่อเรา</a> </nav>
+    </header>
+
+    <div class="container">
+        
+        <h2 id="news">ข่าวประชาสัมพันธ์ล่าสุด</h2>
+        <div class="grid">
+            <div class="news-card">
+                <div class="news-overlay">
+                    <span style="color:var(--nf-red); font-size:11px; font-weight:bold;">รับสมัคร</span>
+                    <div class="news-title">รับสมัครนักศึกษาใหม่ ปริญญาตรี 2569</div>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-overlay">
+                    <span style="color:var(--nf-red); font-size:11px; font-weight:bold;">กิจกรรม</span>
+                    <div class="news-title">เตรียมความพร้อม นครศรีธรรมราชเกมส์</div>
+                </div>
+            </div>
+            <div class="news-card">
+                <div class="news-overlay">
+                    <span style="color:var(--nf-red); font-size:11px; font-weight:bold;">ข่าวทั่วไป</span>
+                    <div class="news-title">ศูนย์ซ่อมสร้าง Fix It Center เพื่อชุมชน</div>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="executives">คณะผู้บริหาร</h2>
+        <div class="grid">
+            <div class="exec-card">
+                <img src="นายอารักษ์ จะรา.jpg" class="exec-img">
+                <div class="exec-info"><b>1. นายอารักษ์ จะรา</b><br><small style="color:var(--nf-red)">ผู้อำนวยการ</small></div>
+            </div>
+            <div class="exec-card">
+                <img src="IMG_0617.jpg" class="exec-img">
+                <div class="exec-info"><b>2. นายวินัย หมื่นรักษ์</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            </div>
+            <div class="exec-card">
+                <img src="1143744.jpg" class="exec-img">
+                <div class="exec-info"><b>3. ว่าที่ร้อยตรีสุนทร เตียวัฒนาตระกูล</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            </div>
+            <div class="exec-card">
+                <img src="นายคมสัน วงศ์คช.jpg" class="exec-img">
+                <div class="exec-info"><b>4. นายคมสัน วงศ์คช</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            </div>
+            <div class="exec-card">
+                <img src="1016031.jpg" class="exec-img">
+                <div class="exec-info"><b>5. นางสาวนุชเนตร ชูแสง</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            </div>
+        </div>
+
+        <h2 id="personnel">บุคลากร</h2>
+        <div class="grid">
+            <div class="card">
+                <span class="card-title">แผนกวิชาช่างยนต์</span>
+                <a href="https://drive.google.com/drive/folders/1rNtSu3m_e1GtAe8ZTpEQeL2UUNc-5fdf" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชายานยนต์ไฟฟ้า</span>
+                <a href="https://drive.google.com/drive/folders/1N7cMzcU5TB2q8RjYNUIwuKLtTggjeyIt" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาช่างกลโรงงาน</span>
+                <a href="https://drive.google.com/drive/folders/1sneMRc2pYLiiDwj0cnFgulI9nFM1VDkp" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาช่างเชื่อมโลหะ</span>
+                <a href="https://drive.google.com/drive/folders/1W86DAMilb0KkY8Apl_hMZ7jfGgIW1L9X" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาไฟฟ้ากำลัง</span>
+                <a href="https://drive.google.com/drive/folders/1gmGHYNdgmGWpPnSuVlvE5yCIuUSnl9Hk" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาช่างอิเล็กทรอนิกส์</span>
+                <a href="https://drive.google.com/drive/folders/16WAOAWshy1Ab6s5NHVTflRmJkc1HK5ds" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาช่างก่อสร้าง</span>
+                <a href="https://drive.google.com/drive/folders/17fN9D7Cins_MOitSxVDvDaboj57oDbBN" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิศาสถาปัตยกรรม</span>
+                <a href="https://drive.google.com/drive/folders/1LiXq8ngmUFgRqBeyutXCyRAQedV3CJo2" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาช่างโยธา</span>
+                <a href="https://drive.google.com/drive/folders/1MJdZZ_hbOQCYbhQCUjkC1rMKVNJwMRrW" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาเมคคาทรอนิกส์</span>
+                <a href="https://drive.google.com/drive/folders/1n_qDSmUVB72eL6lK3dcFnWMEtLm3Xwsl" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาเทคโนโลยีสารสนเทศ</span>
+                <a href="https://drive.google.com/drive/folders/1zLEA--tUMtjIm2y-GT7P1c3pFU_ABaOH" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาเทคนิคพื้นฐาน</span>
+                <a href="https://drive.google.com/drive/folders/1t6gvB44h2lk7KnCBUJLR2fP4Xd8l2Wbe" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card">
+                <span class="card-title">แผนกวิชาตัวถังและสีรถยนต์</span>
+                <a href="https://drive.google.com/drive/folders/1DNqsMeaOsJVqj1aoe1zjfjh2xUKBAlK8" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+        </div>
+
+        <h2 id="departments">สาขาวิชาที่เปิดสอน</h2>
+        <div class="grid">
+            <div class="card"><span class="card-title">ช่างยนต์</span><p class="card-text">เครื่องกลและงานซ่อมบำรุงรถยนต์</p></div>
+            <div class="card"><span class="card-title">เทคนิคพื้นฐาน</span><p class="card-text">ทักษะช่างเบื้องต้นและความปลอดภัย</p></div>
+            <div class="card"><span class="card-title">ตัวถังและสี</span><p class="card-text">งานเคาะพ่นสีมาตรฐานอุตสาหกรรม</p></div>
+            <div class="card"><span class="card-title">ยานยนต์ไฟฟ้า</span><p class="card-text">เทคโนโลยี EV และแบตเตอรี่</p></div>
+            <div class="card"><span class="card-title">ช่างกลโรงงาน</span><p class="card-text">การผลิตด้วยเครื่องจักร CNC</p></div>
+            <div class="card"><span class="card-title">ช่างเชื่อมโลหะ</span><p class="card-text">งานเชื่อมและตรวจสอบรอยเชื่อม</p></div>
+            <div class="card"><span class="card-title">ไฟฟ้ากำลัง</span><p class="card-text">ระบบไฟฟ้าและพลังงานทดแทน</p></div>
+            <div class="card"><span class="card-title">อิเล็กทรอนิกส์</span><p class="card-text">ระบบควบคุม IoT และหุ่นยนต์</p></div>
+            <div class="card"><span class="card-title">ช่างก่อสร้าง</span><p class="card-text">งานก่อสร้างและการเขียนแบบ</p></div>
+            <div class="card"><span class="card-title">สถาปัตยกรรม</span><p class="card-text">การออกแบบอาคารและพื้นที่</p></div>
+            <div class="card"><span class="card-title">ช่างโยธา</span><p class="card-text">งานวิศวกรรมถนนและสะพาน</p></div>
+            <div class="card"><span class="card-title">เมคคาทรอนิกส์</span><p class="card-text">ระบบอัตโนมัติและหุ่นยนต์แขนกล</p></div>
+            <div class="card"><span class="card-title">เทคโนโลยีสารสนเทศ</span><p class="card-text">IT, Network และการเขียนโปรแกรม</p></div>
+        </div>
+
+        <h2 id="contact">ติดต่อเรา</h2>
+        <div class="card" style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 30px; padding: 30px; background-color: var(--nf-dark-grey); border: 1px solid #333; border-radius: 8px;">
+            <div style="flex: 1; min-width: 300px;">
+                <h3 style="color: var(--nf-red); margin-top: 0;">วิทยาลัยเทคนิคนครศรีธรรมราช</h3>
+                <p style="font-size: 14px; color: var(--nf-light-grey);">
+                    <strong>ที่ตั้ง:</strong> 263 ถนนราชดำเนิน ตำบลท่าวัง <br>
+                    อำเภอเมืองนครศรีธรรมราช จังหวัดนครศรีธรรมราช 80000
+                </p>
+                <p style="font-size: 14px; color: var(--nf-light-grey);">
+                    <strong>โทรศัพท์:</strong> 075-356062 <br>
+                    <strong>เว็บไซต์:</strong> <a href="http://www.tnk.ac.th" style="color: var(--nf-light-grey); text-decoration: none;">www.tnk.ac.th</a> <br>
+                    <strong>เวลาทำการ:</strong> จันทร์ - ศุกร์ (08:00 – 16:30 น.)
+                </p>
+                <div style="margin-top: 20px;">
+                    <a href="https://maps.app.goo.gl/YourActualGoogleMapsLink" target="_blank" class="btn-personnel" style="padding: 10px 20px; display: inline-block;">เปิดใน Google Maps</a>
+                </div>
+            </div>
+
+            <div style="flex: 1.5; min-width: 300px; height: 350px; border-radius: 8px; overflow: hidden; border: 1px solid #444;">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3947.6044734685957!2d99.9602506!3d8.454226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x305301339578d327%3A0x85bc24180befa7d2!2z4Lin4Li04LiX4Lii4Liy4Lil4Lix4Lii4LmA4LiX4LiE4LiZ4Li04LiE4LiZ4LiE4Lij4Lio4Lij4Li14LiY4Lij4Lij4Lih4Lij4Liy4LiK!5e0!3m2!1sth!2sth!4v1700000000000" 
+                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                </iframe>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 วิทยาลัยเทคนิคนครศรีธรรมราช | มุ่งมั่นพัฒนาศักยภาพผู้เรียน</p>
+    </footer>
+
+</body>
+</html>
