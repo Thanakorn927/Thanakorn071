@@ -4,258 +4,624 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>วิทยาลัยเทคนิคนครศรีธรรมราช</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
             --nf-red: #E50914;
-            --nf-black: #141414;
-            --nf-dark-grey: #181818;
-            --nf-light-grey: #b3b3b3;
-            --nf-white: #ffffff;
+            --nf-red-dark: #b20710;
+            --bg-main: #0f0f0f;
+            --bg-secondary: #1a1a1a;
+            --text-primary: #ffffff;
+            --text-secondary: #b3b3b3;
         }
 
-        * { box-sizing: border-box; font-family: 'Tahoma', sans-serif; }
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; scroll-padding-top: 110px; /* เผื่อที่ให้ Navbar + Alert Banner */ }
 
         body {
             margin: 0; padding: 0;
-            background-color: var(--nf-black);
-            color: var(--nf-white);
+            background-color: var(--bg-main);
+            background-image: linear-gradient(to bottom, rgba(15,15,15,0.95), rgba(15,15,15,1)), url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
+            background-attachment: fixed;
+            color: var(--text-primary);
             line-height: 1.6;
-            scroll-behavior: smooth;
+            font-family: 'Prompt', sans-serif;
+            overflow-x: hidden;
         }
 
+        /* --------------------------------------
+           🌟 เพิ่มข้อ 1: Alert Banner (แถบประกาศด่วน)
+        --------------------------------------- */
+        .alert-banner {
+            position: fixed; top: 0; width: 100%; height: 40px; z-index: 1001;
+            background: linear-gradient(90deg, var(--nf-red-dark), var(--nf-red), var(--nf-red-dark));
+            background-size: 200% 100%; animation: gradientMove 3s ease infinite;
+            display: flex; align-items: center; justify-content: center;
+            color: white; text-decoration: none; font-size: 14px; font-weight: 500; letter-spacing: 0.5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.5); transition: 0.3s;
+        }
+        .alert-banner:hover { text-shadow: 0 0 8px rgba(255,255,255,0.8); }
+        .alert-banner i { margin-right: 8px; font-size: 16px; animation: bounceIcon 2s infinite; }
+        
+        @keyframes gradientMove { 0% {background-position: 0% 50%;} 50% {background-position: 100% 50%;} 100% {background-position: 0% 50%;} }
+        @keyframes bounceIcon { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-3px);} 60% {transform: translateY(-2px);} }
+
+        /* Navbar - ขยับลงมา 40px เพื่อหลบ Alert Banner */
         header {
-            background-color: rgba(20, 20, 20, 0.95);
-            height: 70px;
-            position: fixed; width: 100%; top: 0; z-index: 1000;
+            background-color: transparent; height: 70px;
+            position: fixed; width: 100%; top: 40px; z-index: 1000;
             display: flex; align-items: center; padding: 0 4%;
-            border-bottom: 1px solid #333;
+            transition: all 0.4s ease;
         }
-
-        .logo { color: var(--nf-red); font-size: 24px; font-weight: bold; text-decoration: none; margin-right: 30px; }
-
-        nav { display: flex; gap: 20px; overflow-x: auto; }
-        nav a { text-decoration: none; color: #e5e5e5; font-size: 14px; white-space: nowrap; transition: 0.3s; }
+        header.scrolled { background-color: rgba(15, 15, 15, 0.95); border-bottom: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); }
+        .logo { color: var(--nf-red); font-size: 24px; font-weight: 700; text-decoration: none; margin-right: 30px; text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px rgba(229, 9, 20, 0.3); }
+        nav { display: flex; gap: 25px; overflow-x: auto; scrollbar-width: none; }
+        nav::-webkit-scrollbar { display: none; }
+        nav a { text-decoration: none; color: var(--text-primary); font-size: 15px; font-weight: 500; white-space: nowrap; transition: 0.3s; padding: 5px 0; position: relative; }
+        header.scrolled nav a { color: var(--text-secondary); }
         nav a:hover { color: var(--nf-red); }
+        nav a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0; background-color: var(--nf-red); transition: 0.3s; }
+        nav a:hover::after { width: 100%; }
 
-        .container { padding: 100px 4% 40px 4%; }
+        /* Hero Banner */
+        .hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(to bottom, rgba(15,15,15,0.4) 0%, rgba(15,15,15,1) 100%), url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=1600&fit=crop') center/cover; position: relative; }
+        .hero-content { max-width: 900px; padding: 20px; animation: fadeInUp 1s ease-out forwards; margin-top: 40px;}
+        .hero-title { font-size: 54px; font-weight: 700; color: #fff; margin-bottom: 10px; text-shadow: 2px 2px 15px rgba(0,0,0,0.8); letter-spacing: 1px; }
+        .hero-title span { color: var(--nf-red); }
+        .hero-subtitle { font-size: 22px; color: #e5e5e5; margin-bottom: 40px; font-weight: 300; text-shadow: 1px 1px 5px rgba(0,0,0,0.8); }
+        .hero-btn { display: inline-block; background: var(--nf-red); color: white; text-decoration: none; padding: 15px 35px; font-size: 16px; font-weight: 700; border-radius: 30px; transition: 0.3s; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.4); }
+        .hero-btn:hover { background: var(--nf-red-dark); transform: scale(1.05); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.6); }
 
-        /* 💡 แก้ไข: เพิ่ม scroll-margin-top เพื่อให้เวลาคลิกเมนูแล้วไม่โดน Navbar บังหัวข้อ */
-        h2 { 
-            font-size: 24px; 
-            margin: 40px 0 20px 0; 
-            border-left: 5px solid var(--nf-red); 
-            padding-left: 15px;
-            scroll-margin-top: 100px; 
+        .container { padding: 40px 4% 60px 4%; max-width: 1400px; margin: auto; }
+
+        /* Stats */
+        .stats-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: -60px; margin-bottom: 60px; position: relative; z-index: 10; }
+        .stat-box { background: var(--bg-secondary); padding: 30px 20px; border-radius: 12px; text-align: center; flex: 1; min-width: 220px; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: 0.4s; }
+        .stat-box:hover { transform: translateY(-8px); border-color: var(--nf-red); }
+        .stat-icon { font-size: 32px; color: var(--text-secondary); margin-bottom: 15px; transition: 0.3s;}
+        .stat-box:hover .stat-icon { color: var(--nf-red); transform: scale(1.1); }
+        .stat-box h3 { color: var(--text-primary); font-size: 36px; margin: 0 0 5px 0; font-weight: 700; }
+        .stat-box p { margin: 0; color: var(--nf-red); font-size: 15px; font-weight: 500; text-transform: uppercase; }
+
+        h2 { font-size: 28px; font-weight: 700; margin: 50px 0 30px 0; padding: 10px 20px; background: linear-gradient(90deg, rgba(229, 9, 20, 0.2) 0%, rgba(0,0,0,0) 70%); border-left: 4px solid var(--nf-red); border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .card-base { background-color: var(--bg-secondary); border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.5); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); animation: fadeInUp 0.8s ease-out forwards; position: relative; }
+        .card-base:hover { transform: translateY(-10px) scale(1.02); border-color: var(--nf-red); box-shadow: 0 15px 40px rgba(229, 9, 20, 0.25); z-index: 10; }
+
+        .news-card { height: 200px; }
+        .news-overlay { position: absolute; bottom: 0; width: 100%; padding: 20px; background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.6) 50%, transparent 100%); }
+        .news-title { font-size: 18px; font-weight: 600; margin-top: 5px; line-height: 1.4; }
+
+        .exec-card { text-align: center; }
+        .exec-img { width: 100%; height: 300px; object-fit: cover; background-color: #222; transition: 0.4s; }
+        .exec-info { padding: 20px; }
+        .exec-info b { font-size: 18px; display: block; margin-bottom: 5px; }
+
+        .card { padding: 25px; display: flex; flex-direction: column; justify-content: space-between; min-height: 180px; }
+        .card-title { font-weight: 700; font-size: 18px; margin-bottom: 15px; color: var(--text-primary); letter-spacing: 0.5px; }
+        .card-text { font-size: 14px; color: var(--text-secondary); margin-bottom: 20px; font-weight: 300; }
+
+        .btn-personnel { display: inline-block; background: linear-gradient(45deg, var(--nf-red), var(--nf-red-dark)); color: white; text-decoration: none; padding: 10px 20px; text-align: center; font-size: 14px; font-weight: 600; border-radius: 6px; transition: 0.3s; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.3); align-self: flex-start; }
+        .btn-personnel:hover { background: linear-gradient(45deg, var(--nf-red-dark), var(--nf-red)); box-shadow: 0 6px 20px rgba(229, 9, 20, 0.5); transform: translateY(-2px); }
+
+        .badge-container { margin-top: auto; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .badge { display: inline-block; padding: 4px 10px; font-size: 11px; font-weight: 600; border-radius: 20px; margin-right: 5px; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .badge-pvc { background-color: rgba(40, 167, 69, 0.2); color: #4ade80; border: 1px solid #4ade80; }
+        .badge-dip { background-color: rgba(0, 123, 255, 0.2); color: #60a5fa; border: 1px solid #60a5fa; }
+        .badge-deg { background-color: rgba(255, 193, 7, 0.2); color: #fbbf24; border: 1px solid #fbbf24; }
+
+        /* Quick Links */
+        .quick-links { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .ql-card { background: linear-gradient(135deg, #1a1a1a, #222); padding: 25px 20px; border-radius: 12px; text-align: center; border: 1px solid rgba(255,255,255,0.05); transition: 0.3s; text-decoration: none; color: var(--text-primary); display: block; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .ql-card:hover { transform: translateY(-5px); border-color: var(--nf-red); box-shadow: 0 10px 25px rgba(229, 9, 20, 0.2); }
+        .ql-icon { font-size: 36px; color: var(--nf-red); margin-bottom: 15px; }
+        .ql-title { font-weight: 600; font-size: 15px; }
+
+        /* Partnerships */
+        .partnerships { display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-bottom: 40px; }
+        .partner-logo { background: var(--bg-secondary); padding: 15px 30px; border-radius: 8px; border: 1px solid #333; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #777; font-size: 16px; text-transform: uppercase; transition: 0.3s; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); flex: 1; min-width: 200px; max-width: 260px;}
+        .partner-logo i { margin-right: 10px; font-size: 24px; color: #555; transition: 0.3s;}
+        .partner-logo:hover { color: var(--text-primary); border-color: var(--nf-red); background: #222; transform: translateY(-5px); }
+        .partner-logo:hover i { color: var(--nf-red); }
+
+        /* FAQ */
+        .faq-container { display: flex; flex-direction: column; gap: 15px; margin-bottom: 40px; }
+        details.faq-item { background: var(--bg-secondary); border: 1px solid rgba(255,255,255,0.05); border-radius: 8px; overflow: hidden; transition: 0.3s; }
+        details.faq-item:hover { border-color: #444; }
+        details.faq-item[open] { border-color: var(--nf-red); box-shadow: 0 4px 15px rgba(229, 9, 20, 0.15); }
+        summary.faq-question { padding: 20px; font-size: 16px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: space-between; color: var(--text-primary); user-select: none; }
+        summary.faq-question::after { content: '\f078'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--nf-red); transition: transform 0.3s; }
+        details.faq-item[open] summary.faq-question::after { transform: rotate(180deg); }
+        summary.faq-question::-webkit-details-marker { display: none; }
+        .faq-answer { padding: 0 20px 20px 20px; color: var(--text-secondary); line-height: 1.6; font-size: 14px; border-top: 1px solid rgba(255,255,255,0.05); margin-top: 5px; padding-top: 15px; animation: fadeIn 0.4s ease-in-out; }
+
+        /* --------------------------------------
+           🌟 เพิ่มข้อ 5: Facebook Embed Layout
+        --------------------------------------- */
+        .fb-embed-container {
+            display: flex;
+            justify-content: center;
+            background: var(--bg-secondary);
+            padding: 30px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-            gap: 20px;
-        }
+        /* Contact Section */
+        .contact-container { display: flex; flex-direction: row; flex-wrap: wrap; gap: 40px; padding: 40px; }
+        .contact-info h3 { font-size: 24px; margin-bottom: 25px; color: var(--nf-red); }
+        .contact-list { list-style: none; padding: 0; margin: 0; }
+        .contact-list li { display: flex; align-items: flex-start; margin-bottom: 20px; color: var(--text-secondary); font-size: 15px; line-height: 1.6; }
+        .contact-list li i { color: var(--nf-red); font-size: 18px; margin-right: 15px; min-width: 25px; text-align: center; margin-top: 3px; }
+        .contact-list li a { color: var(--text-primary); text-decoration: none; transition: 0.3s; font-weight: 500; }
+        .contact-list li a:hover { color: var(--nf-red); }
+        .map-container { flex: 1.5; min-width: 350px; height: 420px; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
 
-        /* News Cards */
-        .news-card {
-            background-color: var(--nf-dark-grey);
-            border-radius: 4px; overflow: hidden; height: 180px;
-            border: 1px solid #333; transition: 0.4s; position: relative;
-        }
-        .news-card:hover { transform: scale(1.05); border-color: var(--nf-red); z-index: 10; }
-        .news-overlay {
-            position: absolute; bottom: 0; width: 100%; padding: 15px;
-            background: linear-gradient(transparent, rgba(0,0,0,0.9));
-        }
+        footer { padding: 60px 20px; text-align: center; color: var(--text-secondary); border-top: 1px solid rgba(255,255,255,0.05); margin-top: 80px; background: linear-gradient(to top, rgba(10,10,10,1), transparent); font-weight: 300; }
 
-        /* Executive Style */
-        .exec-card {
-            background-color: var(--nf-dark-grey);
-            border-radius: 8px; overflow: hidden; text-align: center; border: 1px solid #333; transition: 0.4s;
-        }
-        .exec-img { width: 100%; height: 280px; object-fit: cover; background-color: #222; }
-        .exec-info { padding: 15px; }
+        #scrollTopBtn { position: fixed; bottom: 30px; right: 30px; z-index: 99; background-color: var(--nf-red); color: white; border: none; outline: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 20px; transition: 0.3s; box-shadow: 0 4px 15px rgba(229, 9, 20, 0.5); opacity: 0; pointer-events: none; transform: translateY(20px); }
+        #scrollTopBtn.show { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        #scrollTopBtn:hover { background-color: var(--nf-red-dark); transform: scale(1.1); }
 
-        /* General Card Style */
-        .card {
-            background-color: var(--nf-dark-grey);
-            border-radius: 6px; padding: 20px; border: 1px solid #333;
-            transition: 0.3s; display: flex; flex-direction: column; justify-content: space-between;
-        }
-        .card:hover { border-color: var(--nf-red); background-color: #222; }
-        .card-title { font-weight: bold; font-size: 16px; margin-bottom: 10px; color: var(--nf-white); }
-        .card-text { font-size: 13px; color: var(--nf-light-grey); margin-bottom: 15px; }
-
-        .btn-personnel {
-            display: inline-block; background: var(--nf-red); color: white;
-            text-decoration: none; padding: 8px; text-align: center;
-            font-size: 13px; font-weight: bold; border-radius: 4px;
-        }
-
-        footer { padding: 50px; text-align: center; color: #555; border-top: 1px solid #333; margin-top: 50px; }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="#" class="logo">วิทยาลัยเทคนิคนครศรีธรรมราช</a>
+    <a href="#facebook-feed" class="alert-banner">
+        <i class="fas fa-bell"></i> ประกาศด่วน! อัปเดตข่าวสาร กิจกรรม และการรับสมัครล่าสุดจากแฟนเพจวิทยาลัย คลิกที่นี่!
+    </a>
+
+    <header id="mainNav">
+        <a href="#" class="logo">วิทยาลัยเทคนิคนครศรีฯ</a>
         <nav>
             <a href="#news">หน้าแรก</a>
             <a href="#executives">ผู้บริหาร</a>
             <a href="#personnel">บุคลากร</a>
             <a href="#departments">สาขาวิชา</a>
-            <a href="#contact">ติดต่อเรา</a> </nav>
+            <a href="#contact">ติดต่อเรา</a>
+        </nav>
     </header>
 
-    <div class="container">
-        
+    <section class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">วิทยาลัยเทคนิค<span>นครศรีธรรมราช</span></h1>
+            <p class="hero-subtitle">มุ่งมั่นพัฒนาศักยภาพผู้เรียน สู่ความเป็นเลิศทางสายอาชีพและเทคโนโลยีแห่งอนาคต</p>
+            <a href="#departments" class="hero-btn">ดูสาขาวิชาที่เปิดสอน</a>
+        </div>
+    </section>
+
+    <div class="container" style="padding-top: 0;">
+        <div class="stats-container">
+            <div class="stat-box">
+                <i class="fas fa-user-graduate stat-icon"></i>
+                <h3 class="counter" data-target="1500">0</h3>
+                <p>นักศึกษาปัจจุบัน</p>
+            </div>
+            <div class="stat-box">
+                <i class="fas fa-tools stat-icon"></i>
+                <h3 class="counter" data-target="13">0</h3>
+                <p>แผนกวิชา</p>
+            </div>
+            <div class="stat-box">
+                <i class="fas fa-chalkboard-teacher stat-icon"></i>
+                <h3 class="counter" data-target="250">0</h3>
+                <p>บุคลากรคุณภาพ</p>
+            </div>
+            <div class="stat-box">
+                <i class="fas fa-award stat-icon"></i>
+                <h3 class="counter" data-target="86">0</h3>
+                <p>ปีแห่งความภาคภูมิใจ</p>
+            </div>
+        </div>
+
+        <h2 id="services">บริการออนไลน์ (e-Service)</h2>
+        <div class="quick-links">
+            <a href="https://tnk.ac.th/dvetnk/" target="_blank" class="ql-card">
+                <i class="fas fa-id-card ql-icon"></i>
+                <div class="ql-title">ระบบ ศธ.02 (นักศึกษา)</div>
+            </a>
+            <a href="#" class="ql-card">
+                <i class="fas fa-laptop-code ql-icon"></i>
+                <div class="ql-title">ระบบ e-Learning</div>
+            </a>
+            <a href="#" class="ql-card">
+                <i class="fas fa-file-download ql-icon"></i>
+                <div class="ql-title">ดาวน์โหลดแบบฟอร์ม</div>
+            </a>
+            <a href="#" class="ql-card">
+                <i class="fas fa-calendar-alt ql-icon"></i>
+                <div class="ql-title">ปฏิทินการศึกษา</div>
+            </a>
+        </div>
+
         <h2 id="news">ข่าวประชาสัมพันธ์ล่าสุด</h2>
         <div class="grid">
-            <div class="news-card">
+            <div class="news-card card-base">
                 <div class="news-overlay">
-                    <span style="color:var(--nf-red); font-size:11px; font-weight:bold;">รับสมัคร</span>
-                    <div class="news-title">รับสมัครนักศึกษาใหม่ ปริญญาตรี 2569</div>
+                    <span style="color:var(--nf-red); font-size:12px; font-weight:700; text-transform:uppercase;">รับสมัคร</span>
+                    <div class="news-title">รับสมัครนักศึกษาใหม่ ปริญญาตรี 2569 รอบโควตาพิเศษ</div>
                 </div>
             </div>
-            <div class="news-card">
+            <div class="news-card card-base">
                 <div class="news-overlay">
-                    <span style="color:var(--nf-red); font-size:11px; font-weight:bold;">กิจกรรม</span>
-                    <div class="news-title">เตรียมความพร้อม นครศรีธรรมราชเกมส์</div>
+                    <span style="color:var(--nf-red); font-size:12px; font-weight:700; text-transform:uppercase;">กิจกรรม</span>
+                    <div class="news-title">เตรียมความพร้อมทัพนักกีฬา "นครศรีธรรมราชเกมส์"</div>
                 </div>
             </div>
-            <div class="news-card">
+            <div class="news-card card-base">
                 <div class="news-overlay">
-                    <span style="color:var(--nf-red); font-size:11px; font-weight:bold;">ข่าวทั่วไป</span>
-                    <div class="news-title">ศูนย์ซ่อมสร้าง Fix It Center เพื่อชุมชน</div>
+                    <span style="color:var(--nf-red); font-size:12px; font-weight:700; text-transform:uppercase;">ข่าวทั่วไป</span>
+                    <div class="news-title">เปิดศูนย์ซ่อมสร้าง Fix It Center จิตอาสาเพื่อชุมชน</div>
                 </div>
             </div>
+        </div>
+
+        <h2 id="facebook-feed">อัปเดตข่าวสารจากแฟนเพจ</h2>
+        <div class="fb-embed-container">
+            <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2FPRTNK62&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="340" height="500" style="border:none;overflow:hidden; border-radius: 8px;" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
         </div>
 
         <h2 id="executives">คณะผู้บริหาร</h2>
         <div class="grid">
-            <div class="exec-card">
-                <img src="นายอารักษ์ จะรา.jpg" class="exec-img">
-                <div class="exec-info"><b>1. นายอารักษ์ จะรา</b><br><small style="color:var(--nf-red)">ผู้อำนวยการ</small></div>
+            <div class="exec-card card-base">
+                <img src="t.jpg" class="exec-img" alt="นายอารักษ์ จะรา">
+                <div class="exec-info"><b>1. นายอารักษ์ จะรา</b><small style="color:var(--nf-red); font-weight:500;">ผู้อำนวยการ</small></div>
             </div>
-            <div class="exec-card">
-                <img src="IMG_0617.jpg" class="exec-img">
-                <div class="exec-info"><b>2. นายวินัย หมื่นรักษ์</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            <div class="exec-card card-base">
+                <img src="h.jpg" class="exec-img" alt="นายวินัย หมื่นรักษ์">
+                <div class="exec-info"><b>2. นายวินัย หมื่นรักษ์</b><small style="color:var(--nf-red); font-weight:500;">รองผู้อำนวยการ</small></div>
             </div>
-            <div class="exec-card">
-                <img src="1143744.jpg" class="exec-img">
-                <div class="exec-info"><b>3. ว่าที่ร้อยตรีสุนทร เตียวัฒนาตระกูล</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            <div class="exec-card card-base">
+                <img src="a.jpg" class="exec-img" alt="ว่าที่ร้อยตรีสุนทร">
+                <div class="exec-info"><b>3. ว่าที่ร้อยตรีสุนทร เตียวัฒนาตระกูล</b><small style="color:var(--nf-red); font-weight:500;">รองผู้อำนวยการ</small></div>
             </div>
-            <div class="exec-card">
-                <img src="นายคมสัน วงศ์คช.jpg" class="exec-img">
-                <div class="exec-info"><b>4. นายคมสัน วงศ์คช</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            <div class="exec-card card-base">
+                <img src="n.jpg" class="exec-img" alt="นายคมสัน วงศ์คช">
+                <div class="exec-info"><b>4. นายคมสัน วงศ์คช</b><small style="color:var(--nf-red); font-weight:500;">รองผู้อำนวยการ</small></div>
             </div>
-            <div class="exec-card">
-                <img src="1016031.jpg" class="exec-img">
-                <div class="exec-info"><b>5. นางสาวนุชเนตร ชูแสง</b><br><small style="color:var(--nf-red)">รองผู้อำนวยการ</small></div>
+            <div class="exec-card card-base">
+                <img src="a (2).jpg" class="exec-img" alt="นางสาวนุชเนตร ชูแสง">
+                <div class="exec-info"><b>5. นางสาวนุชเนตร ชูแสง</b><small style="color:var(--nf-red); font-weight:500;">รองผู้อำนวยการ</small></div>
             </div>
         </div>
 
-        <h2 id="personnel">บุคลากร</h2>
+        <h2 id="personnel">บุคลากรตามแผนกวิชา</h2>
         <div class="grid">
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาช่างยนต์</span>
                 <a href="https://drive.google.com/drive/folders/1rNtSu3m_e1GtAe8ZTpEQeL2UUNc-5fdf" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชายานยนต์ไฟฟ้า</span>
                 <a href="https://drive.google.com/drive/folders/1N7cMzcU5TB2q8RjYNUIwuKLtTggjeyIt" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาช่างกลโรงงาน</span>
                 <a href="https://drive.google.com/drive/folders/1sneMRc2pYLiiDwj0cnFgulI9nFM1VDkp" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
-                <span class="card-title">แผนกวิชาช่างเชื่อมโลหะ</span>
-                <a href="https://drive.google.com/drive/folders/1W86DAMilb0KkY8Apl_hMZ7jfGgIW1L9X" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
-            </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาไฟฟ้ากำลัง</span>
                 <a href="https://drive.google.com/drive/folders/1gmGHYNdgmGWpPnSuVlvE5yCIuUSnl9Hk" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาช่างอิเล็กทรอนิกส์</span>
                 <a href="https://drive.google.com/drive/folders/16WAOAWshy1Ab6s5NHVTflRmJkc1HK5ds" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาช่างก่อสร้าง</span>
                 <a href="https://drive.google.com/drive/folders/17fN9D7Cins_MOitSxVDvDaboj57oDbBN" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิศาสถาปัตยกรรม</span>
                 <a href="https://drive.google.com/drive/folders/1LiXq8ngmUFgRqBeyutXCyRAQedV3CJo2" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาช่างโยธา</span>
                 <a href="https://drive.google.com/drive/folders/1MJdZZ_hbOQCYbhQCUjkC1rMKVNJwMRrW" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาเมคคาทรอนิกส์</span>
                 <a href="https://drive.google.com/drive/folders/1n_qDSmUVB72eL6lK3dcFnWMEtLm3Xwsl" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาเทคโนโลยีสารสนเทศ</span>
                 <a href="https://drive.google.com/drive/folders/1zLEA--tUMtjIm2y-GT7P1c3pFU_ABaOH" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาเทคนิคพื้นฐาน</span>
                 <a href="https://drive.google.com/drive/folders/1t6gvB44h2lk7KnCBUJLR2fP4Xd8l2Wbe" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
-            <div class="card">
+            <div class="card card-base">
                 <span class="card-title">แผนกวิชาตัวถังและสีรถยนต์</span>
                 <a href="https://drive.google.com/drive/folders/1DNqsMeaOsJVqj1aoe1zjfjh2xUKBAlK8" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
+            </div>
+            <div class="card card-base">
+                <span class="card-title">แผนกวิชาช่างเชื่อมโลหะ</span>
+                <a href="https://drive.google.com/drive/folders/1W86DAMilb0KkY8Apl_hMZ7jfGgIW1L9X" class="btn-personnel" target="_blank">ดูข้อมูลบุคลากร</a>
             </div>
         </div>
 
         <h2 id="departments">สาขาวิชาที่เปิดสอน</h2>
         <div class="grid">
-            <div class="card"><span class="card-title">ช่างยนต์</span><p class="card-text">เครื่องกลและงานซ่อมบำรุงรถยนต์</p></div>
-            <div class="card"><span class="card-title">เทคนิคพื้นฐาน</span><p class="card-text">ทักษะช่างเบื้องต้นและความปลอดภัย</p></div>
-            <div class="card"><span class="card-title">ตัวถังและสี</span><p class="card-text">งานเคาะพ่นสีมาตรฐานอุตสาหกรรม</p></div>
-            <div class="card"><span class="card-title">ยานยนต์ไฟฟ้า</span><p class="card-text">เทคโนโลยี EV และแบตเตอรี่</p></div>
-            <div class="card"><span class="card-title">ช่างกลโรงงาน</span><p class="card-text">การผลิตด้วยเครื่องจักร CNC</p></div>
-            <div class="card"><span class="card-title">ช่างเชื่อมโลหะ</span><p class="card-text">งานเชื่อมและตรวจสอบรอยเชื่อม</p></div>
-            <div class="card"><span class="card-title">ไฟฟ้ากำลัง</span><p class="card-text">ระบบไฟฟ้าและพลังงานทดแทน</p></div>
-            <div class="card"><span class="card-title">อิเล็กทรอนิกส์</span><p class="card-text">ระบบควบคุม IoT และหุ่นยนต์</p></div>
-            <div class="card"><span class="card-title">ช่างก่อสร้าง</span><p class="card-text">งานก่อสร้างและการเขียนแบบ</p></div>
-            <div class="card"><span class="card-title">สถาปัตยกรรม</span><p class="card-text">การออกแบบอาคารและพื้นที่</p></div>
-            <div class="card"><span class="card-title">ช่างโยธา</span><p class="card-text">งานวิศวกรรมถนนและสะพาน</p></div>
-            <div class="card"><span class="card-title">เมคคาทรอนิกส์</span><p class="card-text">ระบบอัตโนมัติและหุ่นยนต์แขนกล</p></div>
-            <div class="card"><span class="card-title">เทคโนโลยีสารสนเทศ</span><p class="card-text">IT, Network และการเขียนโปรแกรม</p></div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ช่างยนต์</span>
+                    <p class="card-text">เทคโนโลยียานยนต์สมัยใหม่ เครื่องกล งานซ่อมบำรุงมาตรฐานศูนย์บริการ</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                    <span class="badge badge-deg">ป.ตรี</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ยานยนต์ไฟฟ้า (EV)</span>
+                    <p class="card-text">นวัตกรรมรถยนต์ไฟฟ้า ระบบแบตเตอรี่ และการควบคุมมอเตอร์ไฟฟ้าขั้นสูง</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ช่างกลโรงงาน</span>
+                    <p class="card-text">การผลิตชิ้นส่วนด้วยเครื่องจักร CNC และระบบอัตโนมัติในอุตสาหกรรม</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ไฟฟ้ากำลัง</span>
+                    <p class="card-text">ระบบส่งจ่ายกำลังไฟฟ้า การติดตั้งภายในอาคาร และพลังงานทดแทนโซลาร์เซลล์</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                    <span class="badge badge-deg">ป.ตรี</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">อิเล็กทรอนิกส์</span>
+                    <p class="card-text">วงจรอัจฉริยะ ไมโครคอนโทรลเลอร์ ระบบ IoT และหุ่นยนต์เบื้องต้น</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ช่างก่อสร้าง</span>
+                    <p class="card-text">เทคนิคการก่อสร้างอาคาร การประมาณราคา และการเขียนแบบด้วยคอมพิวเตอร์</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">สถาปัตยกรรม</span>
+                    <p class="card-text">การออกแบบสถาปัตยกรรมภายในและภายนอก ความคิดสร้างสรรค์เพื่องานดีไซน์</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ช่างโยธา</span>
+                    <p class="card-text">วิศวกรรมสำรวจ งานโครงสร้างถนน สะพาน และระบบสาธารณูปโภค</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">เมคคาทรอนิกส์</span>
+                    <p class="card-text">บูรณาการเครื่องกล ไฟฟ้า และคอมพิวเตอร์ สู่ระบบหุ่นยนต์แขนกลอุตสาหกรรม</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">เทคโนโลยีสารสนเทศ</span>
+                    <p class="card-text">การพัฒนาซอฟต์แวร์ ระบบเครือข่าย (Network) และความปลอดภัยไซเบอร์</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                    <span class="badge badge-deg">ป.ตรี</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">เทคนิคพื้นฐาน</span>
+                    <p class="card-text">ทักษะช่างอุตสาหกรรมเบื้องต้น และมาตรฐานความปลอดภัยในโรงงาน</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">เตรียมวิศวกรรม</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ตัวถังและสีรถยนต์</span>
+                    <p class="card-text">เทคโนโลยีเคาะพ่นสีรถยนต์ และมาตรฐานอุตสาหกรรมบริการ</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+            <div class="card card-base">
+                <div>
+                    <span class="card-title">ช่างเชื่อมโลหะ</span>
+                    <p class="card-text">เทคโนโลยีงานเชื่อม การตรวจสอบรอยเชื่อมและโครงสร้างเหล็ก</p>
+                </div>
+                <div class="badge-container">
+                    <span class="badge badge-pvc">ปวช.</span>
+                    <span class="badge badge-dip">ปวส.</span>
+                </div>
+            </div>
+        </div>
+
+        <h2 id="partners">เครือข่ายความร่วมมือ (MOU)</h2>
+        <div class="partnerships">
+            <div class="partner-logo"><i class="fas fa-oil-can"></i> ไทยออยล์ เอนเนอร์ยี่ฯ</div>
+            <div class="partner-logo"><i class="fas fa-cogs"></i> Mitsubishi Electric</div>
+            <div class="partner-logo"><i class="fas fa-building"></i> สี่พระยาก่อสร้าง</div>
+            <div class="partner-logo"><i class="fas fa-satellite-dish"></i> NT โทรคมนาคมแห่งชาติ</div>
+            <div class="partner-logo"><i class="fas fa-wifi"></i> AIS</div>
+        </div>
+
+        <h2 id="faq">คำถามที่พบบ่อย (FAQ)</h2>
+        <div class="faq-container">
+            <details class="faq-item">
+                <summary class="faq-question">เปิดรับสมัครนักศึกษาใหม่ช่วงเดือนไหน?</summary>
+                <div class="faq-answer">วิทยาลัยเทคนิคนครศรีธรรมราช เปิดรับสมัครนักศึกษาใหม่รอบโควตาในช่วงเดือนพฤศจิกายน - ธันวาคม และรอบปกติในช่วงเดือนกุมภาพันธ์ - มีนาคม ของทุกปี สามารถติดตามประกาศได้ทางหน้าเว็บไซต์และแฟนเพจวิทยาลัย</div>
+            </details>
+            <details class="faq-item">
+                <summary class="faq-question">วิทยาลัยมีระบบทวิภาคีหรือไม่?</summary>
+                <div class="faq-answer">มีครับ ระบบทวิภาคี คือการจัดการศึกษาที่วิทยาลัยร่วมมือกับสถานประกอบการ โดยนักศึกษาจะได้เรียนทฤษฎีที่วิทยาลัย และไปปฏิบัติงานจริงในสถานประกอบการ มีเบี้ยเลี้ยงระหว่างฝึกงาน และมีโอกาสบรรจุเข้าทำงานทันที</div>
+            </details>
+            <details class="faq-item">
+                <summary class="faq-question">สามารถกู้ยืม กยศ. ได้หรือไม่?</summary>
+                <div class="faq-answer">สามารถกู้ยืมได้ กองทุนเงินให้กู้ยืมเพื่อการศึกษา (กยศ.) มีโควตาให้กับนักศึกษาของวิทยาลัย โดยมีเจ้าหน้าที่แนะแนวคอยให้คำปรึกษาและดำเนินการด้านเอกสารให้ตลอดปีการศึกษา</div>
+            </details>
+            <details class="faq-item">
+                <summary class="faq-question">มีหอพักสำหรับนักศึกษาที่มาจากต่างอำเภอไหม?</summary>
+                <div class="faq-answer">วิทยาลัยมีเครือข่ายหอพักเอกชนที่ได้มาตรฐานและปลอดภัยอยู่บริเวณโดยรอบสถานศึกษา พร้อมให้คำแนะนำและประสานงานให้กับนักศึกษาทุกคนที่ต้องการที่พักครับ</div>
+            </details>
         </div>
 
         <h2 id="contact">ติดต่อเรา</h2>
-        <div class="card" style="display: flex; flex-direction: row; flex-wrap: wrap; gap: 30px; padding: 30px; background-color: var(--nf-dark-grey); border: 1px solid #333; border-radius: 8px;">
-            <div style="flex: 1; min-width: 300px;">
-                <h3 style="color: var(--nf-red); margin-top: 0;">วิทยาลัยเทคนิคนครศรีธรรมราช</h3>
-                <p style="font-size: 14px; color: var(--nf-light-grey);">
-                    <strong>ที่ตั้ง:</strong> 263 ถนนราชดำเนิน ตำบลท่าวัง <br>
-                    อำเภอเมืองนครศรีธรรมราช จังหวัดนครศรีธรรมราช 80000
-                </p>
-                <p style="font-size: 14px; color: var(--nf-light-grey);">
-                    <strong>โทรศัพท์:</strong> 075-356062 <br>
-                    <strong>เว็บไซต์:</strong> <a href="http://www.tnk.ac.th" style="color: var(--nf-light-grey); text-decoration: none;">www.tnk.ac.th</a> <br>
-                    <strong>เวลาทำการ:</strong> จันทร์ - ศุกร์ (08:00 – 16:30 น.)
-                </p>
-                <div style="margin-top: 20px;">
-                    <a href="https://maps.app.goo.gl/YourActualGoogleMapsLink" target="_blank" class="btn-personnel" style="padding: 10px 20px; display: inline-block;">เปิดใน Google Maps</a>
+        <div class="contact-container card-base">
+            <div class="contact-info" style="flex: 1; min-width: 300px;">
+                <h3 style="color: var(--nf-red); margin-top: 0; text-transform: uppercase; letter-spacing: 1px;">วิทยาลัยเทคนิคนครศรีธรรมราช</h3>
+                
+                <ul class="contact-list">
+                    <li>
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>263 ถนนราชดำเนิน ตำบลท่าวัง <br>อำเภอเมืองนครศรีธรรมราช จังหวัดนครศรีธรรมราช 80000</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-phone-alt"></i>
+                        <span><a href="tel:075356062">075-356062</a></span>
+                    </li>
+                    <li>
+                        <i class="fas fa-globe"></i>
+                        <span><a href="http://www.tnk.ac.th" target="_blank">www.tnk.ac.th</a></span>
+                    </li>
+                    <li>
+                        <i class="fab fa-facebook"></i>
+                        <span><a href="https://www.facebook.com/PRTNK62" target="_blank">วิทยาลัยเทคนิคนครศรีธรรมราช</a></span>
+                    </li>
+                    <li>
+                        <i class="fas fa-clock"></i>
+                        <span>จันทร์ - ศุกร์ (08:00 – 16:30 น.)</span>
+                    </li>
+                </ul>
+
+                <div style="margin-top: 30px;">
+                    <a href="https://www.google.com/maps/place/วิทยาลัยเทคนิคนครศรีธรรมราช" target="_blank" class="btn-personnel" style="padding: 12px 25px;"> 
+                        <i class="fas fa-map-marked-alt"></i> เปิดพิกัดใน Google Maps
+                    </a>
                 </div>
             </div>
 
-            <div style="flex: 1.5; min-width: 300px; height: 350px; border-radius: 8px; overflow: hidden; border: 1px solid #444;">
+            <div class="map-container">
                 <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3947.6044734685957!2d99.9602506!3d8.454226!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x305301339578d327%3A0x85bc24180befa7d2!2z4Lin4Li04LiX4Lii4Liy4Lil4Lix4Lii4LmA4LiX4LiE4LiZ4Li04LiE4LiZ4LiE4Lij4Lio4Lij4Li14LiY4Lij4Lij4Lih4Lij4Liy4LiK!5e0!3m2!1sth!2sth!4v1700000000000" 
-                    width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy">
+                    src="https://maps.google.com/maps?q=วิทยาลัยเทคนิคนครศรีธรรมราช&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                    width="100%" height="100%" style="border:0; filter: invert(90%) hue-rotate(180deg) contrast(85%);" allowfullscreen="" loading="lazy">
                 </iframe>
             </div>
         </div>
     </div>
 
     <footer>
-        <p>© 2026 วิทยาลัยเทคนิคนครศรีธรรมราช | มุ่งมั่นพัฒนาศักยภาพผู้เรียน</p>
+        <p>© 2026 วิทยาลัยเทคนิคนครศรีธรรมราช | มุ่งมั่นพัฒนาศักยภาพผู้เรียนสู่อนาคต</p>
     </footer>
+
+    <button onclick="topFunction()" id="scrollTopBtn" title="กลับขึ้นบนสุด"><i class="fas fa-arrow-up"></i></button>
+
+    <script>
+        // 1. Navbar เปลี่ยนสีตอนเลื่อน (ปรับเลขให้เหมาะสมกับ Alert Banner ด้านบน)
+        window.addEventListener("scroll", function() {
+            var header = document.getElementById("mainNav");
+            if (window.scrollY > 40) {
+                header.classList.add("scrolled");
+                // ดัน Navbar ขึ้นไปติดขอบบนแทน Alert Banner เมื่อเลื่อนจอลง
+                header.style.top = "0"; 
+            } else {
+                header.classList.remove("scrolled");
+                // คืน Navbar กลับมาอยู่ใต้ Alert Banner เมื่ออยู่บนสุด
+                header.style.top = "40px"; 
+            }
+        });
+
+        // 2. ปุ่ม Back to Top
+        let mybutton = document.getElementById("scrollTopBtn");
+        window.onscroll = function() {scrollFunction()};
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                mybutton.classList.add("show");
+            } else {
+                mybutton.classList.remove("show");
+            }
+        }
+        function topFunction() {
+            document.body.scrollTop = 0; 
+            document.documentElement.scrollTop = 0; 
+        }
+
+        // 3. Counter Up ในแถบสถิติ
+        const counters = document.querySelectorAll('.counter');
+        const speed = 100; 
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = +counter.getAttribute('data-target');
+                const count = +counter.innerText;
+                const inc = target / speed;
+                if (count < target) {
+                    counter.innerText = Math.ceil(count + inc);
+                    setTimeout(updateCount, 15);
+                } else {
+                    counter.innerText = target + (target > 1500 ? "+" : ""); 
+                }
+            };
+            
+            let observer = new IntersectionObserver(function(entries) {
+                if(entries[0].isIntersecting === true) {
+                    updateCount();
+                    observer.disconnect();
+                }
+            }, { threshold: [0.5] });
+            
+            observer.observe(counter);
+        });
+    </script>
 
 </body>
 </html>
